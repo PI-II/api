@@ -1,15 +1,19 @@
 
+import users from './routes/users/users.js'
+import Fastify from 'fastify';
 
-const Fastify = require("fastify");
 
 
 const fastify = Fastify({
     logger: true,
 })
 
-fastify.register(require('@fastify/mysql'), {
+fastify.register(import('@fastify/mysql'), {
     connectionString: 'mysql://root@localhost/mysql'
   })
+  fastify.register(users, {
+    prefix: "/users"
+  });
 
 fastify.get("/user/:name", (req, reply) => {
     fastify.mysql.query(
@@ -19,23 +23,6 @@ fastify.get("/user/:name", (req, reply) => {
         }
       )
     })
-fastify.get("/users", (_, reply) => {
-    fastify.mysql.query(
-        'SELECT * FROM api_testing.usuarios',
-        function onResult(err, result) {
-            reply.send(err || result)
-        }
-    )
-})
-
-fastify.post("/new_user", (req, reply) => {
-    fastify.mysql.query(
-        'INSERT INTO api_testing.usuarios (nome, cpf, data_nascimento) VALUES (?, ?, ?)', [req.body.nome, req.body.cpf, req.body.data_nascimento],
-        function onResult(err, result) {
-            reply.send(err || result)
-        }
-    )
-  })
 
 fastify.post("/new_session", (req, reply) => {
     fastify.mysql.query(

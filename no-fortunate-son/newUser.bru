@@ -1,0 +1,28 @@
+meta {
+  name: newUser
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://127.0.0.1:3000/users
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "nome": "{{nome}}",
+    "cpf": "{{cpf}}",
+    "data_nascimento": "{{data_nasc}}"
+  }
+  
+  
+  
+}
+
+vars:pre-request {
+  nome: schmigadoon
+  cpf: 102928319124
+  data_nasc: 2024-08-21T15:00:00
+}
