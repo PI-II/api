@@ -1,19 +1,17 @@
 
-import users from './routes/users/users.js'
-import Fastify from 'fastify';
 
+import Fastify from 'fastify';
+import users from './routes/users/users.js'
+import dbConnector from './conn.js'
 
 
 const fastify = Fastify({
     logger: true,
 })
 
-fastify.register(import('@fastify/mysql'), {
-    connectionString: 'mysql://root@localhost/mysql'
-  })
-  fastify.register(users, {
-    prefix: "/users"
-  });
+fastify.register(dbConnector)
+fastify.register(users)
+
 
 fastify.get("/user/:name", (req, reply) => {
     fastify.mysql.query(
@@ -24,32 +22,37 @@ fastify.get("/user/:name", (req, reply) => {
       )
     })
 
-fastify.post("/new_session", (req, reply) => {
-    fastify.mysql.query(
-        'INSERT INTO api_testing.sessoes (inicio, fim, id_usuario) VALUES (?, ?, ?)', [req.body.inicio, req.body.fim, req.body.id_usuario],
-        function onResult(err, result) {
-            reply.send(err || result)
-        }
-    )
-  }) 
 
-fastify.get("/user/:id/sessions", (req, reply) => {
-    fastify.mysql.query(
-        'SELECT * FROM api_testing.sessoes WHERE id_usuario=?', [req.params.id], 
-        function onResult(err, result) {
-            reply.send(err || result)
-        }
-    )
- })
+fastify.get("/bogos", (_, reply) => {
+    reply.send("binted");
+})
 
-fastify.get("/sessions", (_, reply) => {
-    fastify.mysql.query(
-        'SELECT * FROM api_testing.sessoes',
-        function onResult(err, result) {
-            reply.send(err || result)
-        }
-    )
-  })
+// fastify.post("/new_session", (req, reply) => {
+//     fastify.mysql.query(
+//         'INSERT INTO api_testing.sessoes (inicio, fim, id_usuario) VALUES (?, ?, ?)', [req.body.inicio, req.body.fim, req.body.id_usuario],
+//         function onResult(err, result) {
+//             reply.send(err || result)
+//         }
+//     )
+//   }) 
+
+// fastify.get("/user/:id/sessions", (req, reply) => {
+//     fastify.mysql.query(
+//         'SELECT * FROM api_testing.sessoes WHERE id_usuario=?', [req.params.id], 
+//         function onResult(err, result) {
+//             reply.send(err || result)
+//         }
+//     )
+//  })
+
+// fastify.get("/sessions", (_, reply) => {
+//     fastify.mysql.query(
+//         'SELECT * FROM api_testing.sessoes',
+//         function onResult(err, result) {
+//             reply.send(err || result)
+//         }
+//     )
+//   })
 
     fastify.listen({ port: 3000 }, err => {
         if (err) throw err
