@@ -28,21 +28,7 @@ export default async function (fastify) {
             }
         )
     })
-
-    // fastify.delete("/users/:id", (req, reply) => {
-    //     const id = fastify.mysql.query(
-    //         "SELECT id_usuario FROM p2.usuarios WHERE nome = ?", [req.params.nome],
-    //         function onResult(err, result) {
-    //             reply.send(err || result)
-    //         }
-    //     )
-    //     fastify.mysql.query(
-    //         "DELETE FROM p2.usuarios WHERE id_usuario = ?", [id],
-    //         function onResult(err, result) {
-    //             reply.send(err || result)
-    //         })
-    // })
-
+    
     fastify.get("/login/:email/:senha", (req, reply) => {
         fastify.mysql.query(
             "SELECT * FROM p2.usuarios WHERE email = ? AND senha = ?", [req.params.email, req.params.senha],
