@@ -1,4 +1,4 @@
-import {v4 as uuidv4 } from 'uuid'
+import { v4 as uuidv4 } from 'uuid'
 
 export default async function (fastify) {
 
@@ -18,7 +18,7 @@ export default async function (fastify) {
                 reply.send(err || result)
             }
         )
-      })
+    })
 
     fastify.get("/users/:nome", (req, reply) => {
         fastify.mysql.query(
@@ -27,16 +27,21 @@ export default async function (fastify) {
                 reply.send(err || result)
             }
         )
-      })
-
-    fastify.delete("/users/:nome", (req, reply) => {
-        fastify.mysql.query(
-            "DELETE FROM p2.usuarios WHERE nome = ?", [req.params.nome],
-            function onResult(err, result) {
-                reply.send(err || result)
-            }
-        )
     })
+
+    // fastify.delete("/users/:id", (req, reply) => {
+    //     const id = fastify.mysql.query(
+    //         "SELECT id_usuario FROM p2.usuarios WHERE nome = ?", [req.params.nome],
+    //         function onResult(err, result) {
+    //             reply.send(err || result)
+    //         }
+    //     )
+    //     fastify.mysql.query(
+    //         "DELETE FROM p2.usuarios WHERE id_usuario = ?", [id],
+    //         function onResult(err, result) {
+    //             reply.send(err || result)
+    //         })
+    // })
 
     fastify.get("/login/:email/:senha", (req, reply) => {
         fastify.mysql.query(
@@ -46,10 +51,10 @@ export default async function (fastify) {
                     result = "Usuário não encontrado"
                 }
                 reply.send(err || result)
-                
+
             }
         )
     })
 
-      
+
 }
