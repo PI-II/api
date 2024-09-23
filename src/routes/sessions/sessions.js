@@ -18,4 +18,16 @@ export default async function (fastify) {
             }
         )
     })
+//     const date1 = new Date('September 21, 2024 16:30:00');
+// // Sun Dec 17 1995 03:24:00 GMT...
+
+// const date2 = new Date('2024-09-21T15:00:00');
+// // Sun Dec 17 1995 03:24:00 GMT...
+
+// const time = date1 - date2; //30 minutos
+
+// const hour = time / (1000*60*60);
+// console.log(hour.toString() + " hours");
+// // Expected output: 0
+
 }
