@@ -10,12 +10,19 @@ export default async function (fastify) {
             }
         )
     })
-    fastify.post("/sessions", (req, reply) => {
+
+    fastify.post("/session", (req, reply) => {
         fastify.mysql.query(
-            'INSERT INTO p2.sessoes (id, inicio, fim, usuario, usuario_presente) VALUES (?, ?, ?, ?, ?)', [uuidv4(), req.body.inicio, req.body.fim, req.body.usuario, req.body.usuario_presente],
+            'INSERT INTO p2.sessoes (id, inicio, usuario, usuario_presente) VALUES (?, ?, ?, ?)', [uuidv4(), req.body.inicio, req.body.usuario, req.body.usuario_presente],
             function onResult(err, result) {
                 reply.send(err || result)
             }
+        )
+    })
+
+    fastify.patch("/session/finish/:cpf", (req, reply) => {
+        fastify.mysql.query(
+            'UPDATE p2.sessoes SET fim = ? WHERE cpf = ?', [req.body.fim], [req.body.cpf]
         )
     })
     // const date1 = new Date('September 21, 2024 16:30:00');
