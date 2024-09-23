@@ -3,6 +3,7 @@
 import Fastify from 'fastify';
 import users from './routes/users/users.js'
 import dbConnector from './conn.js'
+import sessions from './routes/sessions/sessions.js';
 
 
 const fastify = Fastify({
@@ -11,6 +12,7 @@ const fastify = Fastify({
 
 fastify.register(dbConnector)
 fastify.register(users)
+fastify.register(sessions)
 fastify.register(import("@fastify/cors"), {
     origin: "*"
 })
