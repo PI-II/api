@@ -28,7 +28,7 @@ export default async function (fastify) {
             }
         )
     })
-    
+
     fastify.get("/login/:email/:senha", (req, reply) => {
         fastify.mysql.query(
             "SELECT * FROM p2.usuarios WHERE email = ? AND senha = ?", [req.params.email, req.params.senha],
@@ -41,6 +41,14 @@ export default async function (fastify) {
             }
         )
     })
+    fastify.get("/userSessions", (_, reply) => {
+        fastify.mysql.query(
+            'SELECT U.cpf, U.nome, U.email, U.tipo, S.inicio, S.fim, S.usuario_presente FROM usuarios U INNER JOIN sessoes S ON U.cpf = S.usuario'),
+            function onResult(err, result) {
+                reply.send(err || result)
+            }
+    })
+
 
 
 }
