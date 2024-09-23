@@ -5,8 +5,9 @@ import {db} from './db.js'
 
 async function dbConnector (fastify, options) {
   fastify.register(fastifyMysql, {
-    connectionString: `mysql://${db.user}:${db.password}@${db.host}/${db.database}`, //i'll try .env when i get home.
+    connectionString: `mysql://${db.user}:${db.password}@${db.host}`, //i'll try .env when i get home.
   })
 }
 
 export default fastifyPlugin(dbConnector)
+
