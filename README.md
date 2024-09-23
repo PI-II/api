@@ -1,5 +1,22 @@
-# Todo
- - Pesquisar sobre [fastify-cookie](https://www.npmjs.com/package/@fastify/cookie);
- - Criar rotas para sessões;
- - Pesquisar sobre [ISO 8601](https://pt.wikipedia.org/wiki/ISO_8601)(formatação de data);
- - Corrigir rotas de registro e login.
+## Instalação
+
+### API
+Após clonar o repositório da [API](https://github.com/PI-II/api), criar um arquivo dentro da pasta ```src``` com o nome de ```db.js``` e, neste arquivo, inserir as configurações de banco:
+ - Usuário;
+ - Senha;
+ - Host;
+ - Tipo de banco.
+   
+Exemplo:
+  ```js \
+  const db = {
+  "user": "root",
+  "password": "pwd",
+  "host": "localhost",
+  "database": "mysql"
+  }
+  ```
+
+Instalar as dependências da API com ```npm install```
+
+Após isso, use ```cd src``` no terminal e inicie a api. Pode-se utilizar ```npx nodemon``` para que a API reinicie automaticamente a cada atualização ou ```node index.js``` para que ela inicie e seja reiniciada manualmente.
