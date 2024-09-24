@@ -5,7 +5,7 @@ Após clonar o repositório da [API](https://github.com/PI-II/api), criar um arq
  - Usuário;
  - Senha;
  - Host;
- - Tipo de banco.
+ - Schema.
    
 Exemplo:
   ```js \
@@ -13,7 +13,7 @@ Exemplo:
   "user": "root",
   "password": "pwd",
   "host": "localhost",
-  "database": "mysql"
+  "database": "chosenschema"
   }
   ```
 
