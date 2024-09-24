@@ -3,9 +3,9 @@ import {db} from '../../db.js'
 
 export default async function (fastify) {
 
-    fastify.get("/sessions", (_, reply) => {
+    fastify.post("/users/sessions", (req, reply) => {
         fastify.mysql.query(
-            `SELECT usuarios.cpf, usuarios.nome, usuarios.email, usuarios.tipo, sessoes.inicio, sessoes.fim, sessoes.usuario_presente FROM ${db.database}.usuarios INNER JOIN ${db.database}.sessoes ON sessoes.usuario = usuarios.cpf`,
+            `SELECT usuarios.cpf, usuarios.nome, usuarios.email, usuarios.tipo, sessoes.inicio, sessoes.fim FROM ${db.database}.usuarios INNER JOIN ${db.database}.sessoes ON sessoes.usuario = usuarios.cpf WHERE usuarios.nome = ?`, [req.body.nome],
             function onResult(err, result) {
                 reply.send(err || result)
             }
@@ -14,7 +14,7 @@ export default async function (fastify) {
 
     fastify.post("/session", (req, reply) => {
         fastify.mysql.query(
-            `INSERT INTO ${db.database}.sessoes (id, inicio, usuario, usuario_presente) VALUES (?, ?, ?, ?)`, [uuidv4(), req.body.inicio, req.body.usuario, req.body.usuario_presente],
+            `INSERT INTO ${db.database}.sessoes (id, inicio, fim, usuario) VALUES (?, ?, ?, ?)`, [uuidv4(), req.body.inicio, req.body.fim, req.body.usuario],
             function onResult(err, result) {
                 reply.send(err || result)
             }
@@ -24,6 +24,15 @@ export default async function (fastify) {
     fastify.patch("/session/finish/:cpf", (req, reply) => {
         fastify.mysql.query(
             `UPDATE ${db.database}.sessoes SET fim = ? WHERE cpf = ?`, [req.body.fim], [req.body.cpf]
+        )
+    })
+
+    fastify.get("/sessions", (_, reply) => {
+        fastify.mysql.query(
+            `SELECT inicio, fim, usuario FROM ${db.database}.sessoes`,
+            function onResult(err, result) {
+                reply.send(err || result)
+            }
         )
     })
     // const date1 = new Date(`September 21, 2024 16:30:00`);
