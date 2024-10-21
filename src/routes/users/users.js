@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from 'uuid'
 import {db} from '../../db.js'
 
 export default async function (fastify) {
+    
 
     fastify.get("/users", (_, reply) => {
         fastify.mysql.query(
@@ -31,6 +32,7 @@ export default async function (fastify) {
         )
     })
 
+    
     fastify.post("/login", (req, reply) => {
         fastify.mysql.query(
             `SELECT * FROM ${db.database}.usuarios WHERE email = ? AND senha = ?`, [req.params.email, req.params.senha],

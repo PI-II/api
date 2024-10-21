@@ -16,6 +16,11 @@ fastify.register(sessions)
 fastify.register(import("@fastify/cors"), {
     origin: "*"
 })
+fastify.register(require('@fastify/cookie'), {
+    secret: "not-secret",
+    hook: 'onRequest', 
+        parseOptions: {}  
+  })
 
 fastify.get("/", (_, reply) => {
     reply.send("bogos binted 👽");
