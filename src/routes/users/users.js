@@ -47,6 +47,19 @@ export default async function (fastify) {
         )
     })
 
+    fastify.post("/check", (req, reply) => {
+        fastify.mysql.query(
+            `SELECT * FROM ${db.database}.usuarios WHERE cpf = ?`, [req.body.cpf],
+            function onResult(err, result) {
+                if (result.length != 0) {
+                    reply.code(401).send("CPF já cadastrado")
+                } else {
+                    reply.code(200).send("CPF disponível.")
+                }
+            }
+        )
+    })
+
 
 
 }

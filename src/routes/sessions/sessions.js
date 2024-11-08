@@ -3,14 +3,14 @@ import {db} from '../../db.js'
 
 export default async function (fastify) {
 
-    fastify.post("/users/sessions", (req, reply) => {
+    /*fastify.post("/users/sessions", (req, reply) => {
         fastify.mysql.query(
             `SELECT usuarios.cpf, usuarios.nome, usuarios.email, usuarios.tipo, sessoes.inicio, sessoes.fim FROM ${db.database}.usuarios INNER JOIN ${db.database}.sessoes ON sessoes.usuario = usuarios.cpf WHERE usuarios.nome = ?`, [req.body.nome],
             function onResult(err, result) {
                 reply.send(err || result)
             }
         )
-    })
+    })*/
 
     fastify.post("/session", (req, reply) => {
         fastify.mysql.query(
