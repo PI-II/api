@@ -21,11 +21,11 @@ export default async function (fastify) {
         )
     })
 
-    fastify.patch("/session/finish/:cpf", (req, reply) => {
+    /*fastify.patch("/session/finish/:cpf", (req, reply) => {
         fastify.mysql.query(
             `UPDATE ${db.database}.sessoes SET fim = ? WHERE cpf = ?`, [req.body.fim], [req.body.cpf]
         )
-    })
+    })*/
 
     fastify.get("/sessions", (_, reply) => {
         fastify.mysql.query(
