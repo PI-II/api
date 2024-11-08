@@ -35,13 +35,14 @@ export default async function (fastify) {
     
     fastify.post("/login", (req, reply) => {
         fastify.mysql.query(
-            `SELECT * FROM ${db.database}.usuarios WHERE email = ? AND senha = ?`, [req.params.email, req.params.senha],
+            `SELECT * FROM ${db.database}.usuarios WHERE email = ? AND senha = ?`, [req.body.email, req.body.senha],
             function onResult(err, result) {
-                if (result.length == 0) {
-                    result = "Usuário não encontrado"
+                if (result.length === 0) {
+                    reply.code(401).send("Usuário ou senha inválidos")
+                } else {
+                    
+                reply.code(200).send(err || result)
                 }
-                reply.send(err || result)
-                
             }
         )
     })
