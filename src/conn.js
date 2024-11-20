@@ -1,13 +1,16 @@
+import fastifyPlugin from "fastify-plugin";
+import fastifyMysql from "@fastify/mysql";
 
-import fastifyPlugin from 'fastify-plugin'
-import fastifyMysql from '@fastify/mysql'
-import {db} from './db.js'
+const db = {
+  user: process.env["DB_USER"] || "root",
+  password: process.env["DB_PASS"] || "none",
+  host: process.env["DB_HOST"] || "localhost",
+};
 
-async function dbConnector (fastify, options) {
+async function dbConnector(fastify, options) {
   fastify.register(fastifyMysql, {
-    connectionString: `mysql://${db.user}:${db.password}@${db.host}`, //i'll try .env when i get home.
-  })
+    connectionString: `mysql://${db.user}:${db.password}@${db.host}`,
+  });
 }
 
-export default fastifyPlugin(dbConnector)
-
+export default fastifyPlugin(dbConnector);
