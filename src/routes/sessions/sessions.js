@@ -18,7 +18,7 @@ export default async function (fastify) {
 
     fastify.post("/session", (req, reply) => {
         fastify.mysql.query(
-            `INSERT INTO ${db.database}.sessoes (id, inicio, usuario) VALUES (?, ?, ?)`, [uuidv4(), req.body.inicio, req.body.usuario],
+            `INSERT INTO ${db.database}.sessoes (inicio, usuario) VALUES (?, ?)`, [req.body.inicio, req.body.usuario],
             function onResult(err, result) {
                 reply.send(err || result)
             }
@@ -31,9 +31,9 @@ export default async function (fastify) {
         )
     })
 
-    fastify.patch("/session/finish", (req, reply) => {
+    fastify.patch("/finish", (req, reply) => {
         fastify.mysql.query(
-            `UPDATE ${db.database}.sessoes SET fim = ? WHERE cpf = ?`, [req.body.fim, req.params.cpf],
+            `UPDATE ${db.database}.sessoes SET fim = ? WHERE usuario = ?`, [req.body.fim, req.params.usuario],
             function onResult(err, result) {
                 reply.send(err || result)
             }
@@ -43,6 +43,14 @@ export default async function (fastify) {
     fastify.get("/sessions", (_, reply) => {
         fastify.mysql.query(
             `SELECT inicio, fim, usuario FROM ${db.database}.sessoes`,
+            function onResult(err, result) {
+                reply.send(err || result)
+            }
+        )
+    })
+    fastify.get("/user/sessions", (_, reply) => {
+        fastify.mysql.query(
+            `SELECT id, inicio, fim, usuario FROM ${db.database}.sessoes WHERE usuario = ?`, [req.body.usuario],
             function onResult(err, result) {
                 reply.send(err || result)
             }

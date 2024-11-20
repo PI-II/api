@@ -13,7 +13,7 @@ export default async function (fastify) {
 
   fastify.post("/users", (req, reply) => {
     fastify.mysql.query(
-      `INSERT INTO ${db.database}.usuarios (cpf, nome, email, tipo, senha) VALUES (?, ?, ?, ?, ?)`,
+      `INSERT INTO ${db.database}.pessoa (cpf, nome, email, tipo, senha) VALUES (?, ?, ?, ?, ?)`,
       [
         req.body.cpf,
         req.body.nome,
