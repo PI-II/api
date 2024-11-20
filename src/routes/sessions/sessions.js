@@ -3,29 +3,42 @@ import {db} from '../../db.js'
 
 export default async function (fastify) {
 
-    /*fastify.post("/users/sessions", (req, reply) => {
+    fastify.post("/users/sessions", (req, reply) => {
         fastify.mysql.query(
-            `SELECT usuarios.cpf, usuarios.nome, usuarios.email, usuarios.tipo, sessoes.inicio, sessoes.fim FROM ${db.database}.usuarios INNER JOIN ${db.database}.sessoes ON sessoes.usuario = usuarios.cpf WHERE usuarios.nome = ?`, [req.body.nome],
-            function onResult(err, result) {
-                reply.send(err || result)
-            }
-        )
-    })*/
-
-    fastify.post("/session", (req, reply) => {
-        fastify.mysql.query(
-            `INSERT INTO ${db.database}.sessoes (id, inicio, fim, usuario) VALUES (?, ?, ?, ?)`, [uuidv4(), req.body.inicio, req.body.fim, req.body.usuario],
+            `SELECT usuarios.cpf, usuarios.nome, usuarios.email, usuarios.tipo, sessoes.inicio, sessoes.fim 
+            FROM ${db.database}.usuarios 
+            INNER JOIN ${db.database}.sessoes 
+            ON sessoes.usuario = usuarios.cpf 
+            WHERE usuarios.cpf = ?`, [req.body.cpf],
             function onResult(err, result) {
                 reply.send(err || result)
             }
         )
     })
 
-    /*fastify.patch("/session/finish/:cpf", (req, reply) => {
+    fastify.post("/session", (req, reply) => {
         fastify.mysql.query(
-            `UPDATE ${db.database}.sessoes SET fim = ? WHERE cpf = ?`, [req.body.fim], [req.body.cpf]
+            `INSERT INTO ${db.database}.sessoes (id, inicio, usuario) VALUES (?, ?, ?)`, [uuidv4(), req.body.inicio, req.body.usuario],
+            function onResult(err, result) {
+                reply.send(err || result)
+            }
         )
-    })*/
+    })
+
+    fastify.post("/checkopen", (req, reply) => {
+        fastify.mysql.query(
+            `SELECT * FROM ${db.database}.sessoes WHERE fim IS NULL AND usuario = ?`, [req.body.cpf]
+        )
+    })
+
+    fastify.patch("/session/finish", (req, reply) => {
+        fastify.mysql.query(
+            `UPDATE ${db.database}.sessoes SET fim = ? WHERE cpf = ?`, [req.body.fim, req.params.cpf],
+            function onResult(err, result) {
+                reply.send(err || result)
+            }
+        )
+    })
 
     fastify.get("/sessions", (_, reply) => {
         fastify.mysql.query(
