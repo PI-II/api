@@ -14,7 +14,7 @@ export default async function (fastify) {
 
     fastify.post("/session", (req, reply) => {
         fastify.mysql.query(
-            `INSERT INTO ${db.database}.sessoes (id, inicio, fim, usuario) VALUES (?, ?, ?, ?)`, [uuidv4(), req.body.inicio, req.body.fim, req.body.usuario],
+            `INSERT INTO ${db.database}.sessoes (inicio, usuario) VALUES (?, ?)`, [uuidv4(), req.body.inicio, req.body.fim, req.body.usuario],
             function onResult(err, result) {
                 reply.send(err || result)
             }
@@ -31,10 +31,11 @@ export default async function (fastify) {
         fastify.mysql.query(
             `SELECT inicio, fim, usuario FROM ${db.database}.sessoes`,
             function onResult(err, result) {
-                reply.send(err || result)
+              reply.send(err || result);
             }
         )
     })
+    
     // const date1 = new Date(`September 21, 2024 16:30:00`);
     // // Sun Dec 17 1995 03:24:00 GMT...
     
