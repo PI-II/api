@@ -1,8 +1,6 @@
 import Fastify from "fastify";
 import dotenv from "dotenv";
 
-dotenv.config();
-
 const fastify = Fastify({
   logger: true,
 });
@@ -23,7 +21,7 @@ fastify.register(import("@fastify/jwt"), {
 
 fastify.decorateReply(
   "sendLogin",
-  async function (this, userInfo) {
+  async function (userInfo) {
     const payload = {
       email: userInfo.email, 
       role: userInfo.role

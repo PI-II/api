@@ -45,7 +45,7 @@ export default async function (fastify) {
         if (result.length === 0) {
           reply.code(401).send("Usuário ou senha inválidos");
         } else {
-          reply.sendLogin({ email: req.body.email, role: result[0].tipo });
+            reply.code(200).sendLogin({ email: req.body.email, role: result[0].tipo });
         }
       }
     );

@@ -35,7 +35,7 @@ export default async function (fastify) {
 
   fastify.patch("/finish", (req, reply) => {
     fastify.mysql.query(
-      `UPDATE ${db.database}.sessoes SET fim = ? WHERE usuario = ?`,
+      `UPDATE ${db.database}.sessoes SET fim = ? WHERE id = ?`,
       [req.body.fim, req.params.usuario],
       function onResult(err, result) {
         reply.send(err || result);
@@ -51,10 +51,10 @@ export default async function (fastify) {
       }
     );
   });
-  fastify.get("/user/sessions", (_, reply) => {
+  fastify.get("/user/sessions", { preHandler: [fastify.authenticate] }, async (req, reply) => {   
     fastify.mysql.query(
       `SELECT id, inicio, fim, usuario FROM ${db.database}.sessoes WHERE usuario = ?`,
-      [req.body.usuario],
+      [fastify.user.cpf],
       function onResult(err, result) {
         reply.send(err || result);
       }
