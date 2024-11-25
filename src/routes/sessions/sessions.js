@@ -33,7 +33,7 @@ export default async function (fastify) {
 
   fastify.get("/sessions", (_, reply) => {
     fastify.mysql.query(
-      `SELECT inicio, fim, usuario FROM ${db.database}.sessoes`,
+      `SELECT * FROM ${db.database}.sessoes`,
       function onResult(err, result) {
         reply.send(err || result);
       }
@@ -64,7 +64,7 @@ export default async function (fastify) {
 
   fastify.post("/week", (req, reply) => {
     fastify.mysql.query(
-      `SELECT inicio, fim, usuario FROM ${db.database}.sessoes 
+      `SELECT * FROM ${db.database}.sessoes 
       WHERE inicio LIKE ? AND fim LIKE ?`,
       [`${req.body.inicio}%`, `${req.body.fim}%`],
       function onResult(err, result) {
