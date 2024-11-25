@@ -4,8 +4,12 @@ meta {
   seq: 6
 }
 
-post {
-  url: http://localhost:3000/user/sessions
-  body: none
+get {
+  url: http://localhost:3000/user/sessions/88608365650
+  body: json
   auth: none
+}
+
+body:json {
+  {"usuario":"88608365650"}
 }
