@@ -33,25 +33,13 @@ export default async function (fastify) {
 
   fastify.get("/sessions", (_, reply) => {
     fastify.mysql.query(
-      `SELECT * FROM ${db.database}.sessoes`,
+      `SELECT *, timestampdiff(HOUR,inicio,fim) as tempo FROM ${db.database}.sessoes`,
       function onResult(err, result) {
         reply.send(err || result);
       }
     );
   });
 
-  fastify.get("/hasopen/:usuario", (req, reply) => {
-    fastify.mysql.query(
-      `SELECT * FROM ${db.database}.sessoes WHERE fim IS NULL AND usuario = ?`,
-      function onResult(_, result) {
-        if (result && result.length != 0) {
-            reply.code(401).send("Sessão em aberto.");
-        } else {
-            reply.code(200).send("Nenhuma sessão em aberto.");
-        }
-      }
-    );
-  });
   fastify.get("/user/sessions/:usuario", (req, reply) => {
     fastify.mysql.query(
       `SELECT id, inicio, fim FROM ${db.database}.sessoes WHERE usuario = ?`,
@@ -64,11 +52,11 @@ export default async function (fastify) {
 
   fastify.post("/week", (req, reply) => {
     fastify.mysql.query(
-      `SELECT * FROM ${db.database}.sessoes 
-      WHERE inicio LIKE ? AND fim LIKE ?`,
-      [`${req.body.inicio}%`, `${req.body.fim}%`],
+      `SELECT *, timestampdiff(HOUR,inicio,fim) as tempo FROM ${db.database}.sessoes 
+      WHERE inicio BETWEEN ? AND ?`,
+      [req.body.inicio, req.body.fim],
       function onResult(err, result) {
-      reply.send(err || result);
+        reply.send(err || result);
       }
     );
   })
