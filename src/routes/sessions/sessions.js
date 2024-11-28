@@ -68,7 +68,7 @@ export default async function (fastify) {
 
   fastify.post("/user/sessions", (req, reply) => {
     fastify.mysql.query(
-      `SELECT id, inicio, fim, TIMESTAMPDIFF(HOUR,inicio,fim)   as total FROM ${db.database}.sessoes WHERE usuario = ? AND inicio BETWEEN ? AND ? GROUP BY id`,
+      `SELECT id, inicio, fim, TIMESTAMPDIFF(HOUR,inicio,fim) as total FROM ${db.database}.sessoes WHERE usuario = ? AND inicio BETWEEN ? AND ? GROUP BY id`,
       [req.body.usuario, req.body.inicio, req.body.fim],
       function onResult(err, result) {
         reply.send(err || result);
