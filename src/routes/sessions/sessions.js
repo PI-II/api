@@ -5,11 +5,11 @@ function getMonday() {
   let mondayWeek = new Date(Date.now());
   let monday = mondayWeek.getDay() || 7;
   if (monday !== 1) {
-    mondayWeek.setHours(-24* (monday - 1));
+    mondayWeek.setHours(-24 * (monday - 1));
   }
   let year = mondayWeek.getFullYear();
-  let month = String(mondayWeek.getMonth() + 1).padStart(2, '0');
-  let dayW = String(mondayWeek.getDate()).padStart(2,'0');
+  let month = String(mondayWeek.getMonth() + 1).padStart(2, "0");
+  let dayW = String(mondayWeek.getDate()).padStart(2,"0");
   var formattedMonday = `${year}-${month}-${dayW} 00:00:00`;
 
   return formattedMonday;
@@ -21,8 +21,8 @@ function getSunday() {
     sundayWeek.setHours(-24 * (sunday - 7));
   }
   let year = sundayWeek.getFullYear();
-  let month = String(sundayWeek.getMonth() + 1).padStart(2, '0');
-  let dayW = String(sundayWeek.getDate()).padStart(2,'0');
+  let month = String(sundayWeek.getMonth() + 1).padStart(2, "0");
+  let dayW = String(sundayWeek.getDate()).padStart(2,"0");
   var formattedSunday = `${year}-${month}-${dayW} 23:59:59`;
   return formattedSunday;
 }
