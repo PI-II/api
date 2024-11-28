@@ -196,4 +196,13 @@ export default async function (fastify) {
       }
     );
   });
+
+  fastify.post("/searchemail", (req, reply) => {
+    fastify.mysql.query(
+      `SELECT cpf FROM ${db.database}.usuarios WHERE email = ?`, [req.body.email],
+      function onResult(_, result) {
+        reply.code(200).send(result[0].cpf);
+      }
+    )
+})
 }
