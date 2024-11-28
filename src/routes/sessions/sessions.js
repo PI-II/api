@@ -1,15 +1,16 @@
 import { v4 as uuidv4 } from "uuid";
 import { db } from "../../db.js";
+import sql from "../../mysql.js";
 
 function getMonday() {
   let mondayWeek = new Date(Date.now());
   let monday = mondayWeek.getDay() || 7;
   if (monday !== 1) {
-    mondayWeek.setHours(-24* (monday - 1));
+    mondayWeek.setHours(-24 * (monday - 1));
   }
   let year = mondayWeek.getFullYear();
-  let month = String(mondayWeek.getMonth() + 1).padStart(2, '0');
-  let dayW = String(mondayWeek.getDate()).padStart(2,'0');
+  let month = String(mondayWeek.getMonth() + 1).padStart(2, "0");
+  let dayW = String(mondayWeek.getDate()).padStart(2, "0");
   var formattedMonday = `${year}-${month}-${dayW} 00:00:00`;
 
   return formattedMonday;
@@ -21,25 +22,24 @@ function getSunday() {
     sundayWeek.setHours(-24 * (sunday - 7));
   }
   let year = sundayWeek.getFullYear();
-  let month = String(sundayWeek.getMonth() + 1).padStart(2, '0');
-  let dayW = String(sundayWeek.getDate()).padStart(2,'0');
+  let month = String(sundayWeek.getMonth() + 1).padStart(2, "0");
+  let dayW = String(sundayWeek.getDate()).padStart(2, "0");
   var formattedSunday = `${year}-${month}-${dayW} 23:59:59`;
   return formattedSunday;
 }
 
 export default async function (fastify) {
+  fastify.post("/session", async (req, reply) => {
+    const res = await sql`INSERT INTO sessoes (inicio, usuario) 
+                    VALUES (${req.body.inicio}, ${req.body.usuario})`;
 
-  fastify.post("/session", (req, reply) => {
-    fastify.mysql.query(
-      `INSERT INTO ${db.database}.sessoes (inicio, usuario) VALUES (?, ?)`,
-      [req.body.inicio, req.body.usuario],
-      function onResult(err, result) {
-        reply.send(err || result);
-      }
-    );
+    reply.send(res);
   });
 
-  fastify.patch("/finish", (req, reply) => {
+  fastify.patch("/finish", async (req, reply) => {
+    const res =
+      await sql`UPDATE ${db.database}.sessoes SET fim = ? WHERE id = ?`;
+  
     fastify.mysql.query(
       `UPDATE ${db.database}.sessoes SET fim = ? WHERE id = ?`,
       [req.body.fim, req.body.id],
@@ -72,12 +72,12 @@ export default async function (fastify) {
     fastify.mysql.query(
       `SELECT *, timestampdiff(HOUR,inicio,fim) as tempo FROM ${db.database}.sessoes 
       WHERE inicio BETWEEN ? AND ?`,
-      [getMonday(),getSunday()],
+      [getMonday(), getSunday()],
       function onResult(err, result) {
         reply.send(err || result);
       }
     );
-  })
+  });
 
   fastify.get("/weekSessions", (_, reply) => {
     fastify.mysql.query(
@@ -88,6 +88,5 @@ export default async function (fastify) {
         reply.send(err || result);
       }
     );
-  })
-
+  });
 }
