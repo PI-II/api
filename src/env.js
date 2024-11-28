@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 import path from "node:path";
 
 dotenv.config({
-  path: path.resolve(process.cwd(), "..", ".env"),
+  path: path.join(process.cwd(), "..", ".env"),
 });
 
 export const DB_CONFIG = {
@@ -11,3 +11,4 @@ export const DB_CONFIG = {
   password: process.env["DB_PASS"] || undefined,
   database: process.env["DB_SCHEMA"] || "test",
 };
+console.log(DB_CONFIG);
