@@ -11,4 +11,3 @@ export const DB_CONFIG = {
   password: process.env["DB_PASS"] || undefined,
   database: process.env["DB_SCHEMA"] || "test",
 };
-console.log(DB_CONFIG);
